@@ -48,6 +48,7 @@ android {
 dependencies {
 
     implementation(libs.hiltAndroid)
+    implementation(libs.lifecycle.runtime.compose)
     kapt(libs.hiltAndroidCompiler)
     implementation(libs.hiltNavigationCompose)
     implementation(libs.androidx.core.ktx)
@@ -58,6 +59,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
