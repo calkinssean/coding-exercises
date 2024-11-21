@@ -12,6 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.codingchallenge.presentation.NavigationHost
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,30 +25,15 @@ class MainActivity : ComponentActivity() {
 //        Log.d("MainActivity", "onCreate: MainActivity")
         enableEdgeToEdge()
         setContent {
-            CodingChallengeTheme {
-                Scaffold( modifier = Modifier.fillMaxSize() ) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            val navController = rememberNavController()
+            AppScaffold(navController = navController)
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
+fun AppScaffold(navController: NavHostController) {
     CodingChallengeTheme {
-        Greeting("Android")
+        NavigationHost(navController = navController)
     }
 }
