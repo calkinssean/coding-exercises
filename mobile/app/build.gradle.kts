@@ -47,6 +47,7 @@ android {
 
 dependencies {
 
+    implementation(libs.accompanist)
     implementation(libs.hiltAndroid)
     implementation(libs.lifecycle.runtime.compose)
     kapt(libs.hiltAndroidCompiler)

@@ -17,17 +17,24 @@ import androidx.navigation.compose.rememberNavController
 import com.example.codingchallenge.presentation.NavigationHost
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 import dagger.hilt.android.AndroidEntryPoint
+import org.osmdroid.config.Configuration
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setOSMConfig()
 //        Log.d("MainActivity", "onCreate: MainActivity")
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
             AppScaffold(navController = navController)
         }
+    }
+
+    private fun setOSMConfig() {
+        Configuration.getInstance().load(this, getPreferences(MODE_PRIVATE))
+
     }
 }
 
