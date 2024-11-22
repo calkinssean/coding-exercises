@@ -19,14 +19,8 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
 
     val observableModel: StateFlow<MapScreenModel> = mutableModel
 
-    private var isInitialized = false
-
     fun onStart() {
         Log.d("MapScreenViewModel", "onStart: onStart")
-        if (isInitialized) return
-
-        isInitialized = true
-
         fetchLocations()
     }
 

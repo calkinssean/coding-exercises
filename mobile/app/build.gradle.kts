@@ -50,6 +50,7 @@ dependencies {
     implementation(libs.hiltAndroid)
     implementation(libs.lifecycle.runtime.compose)
     kapt(libs.hiltAndroidCompiler)
+    implementation(libs.osmdroid)
     implementation(libs.hiltNavigationCompose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
