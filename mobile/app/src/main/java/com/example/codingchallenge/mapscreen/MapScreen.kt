@@ -1,8 +1,6 @@
 package com.example.codingchallenge.mapscreen
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -10,7 +8,6 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -151,7 +148,7 @@ private fun MapScreenContent(
     ) { _ ->
         OSMMapView(
             modifier = Modifier.fillMaxSize(),
-            locations = model.filteredLocations()
+            locations = model.filteredByType()
         )
     }
 }

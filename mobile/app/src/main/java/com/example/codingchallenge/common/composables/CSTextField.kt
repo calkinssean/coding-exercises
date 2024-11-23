@@ -20,6 +20,7 @@ fun CSTextField(
     onValueChange: (String) -> Unit,
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null
 ) {
     TextField(
         modifier = modifier,
@@ -28,6 +29,8 @@ fun CSTextField(
         onValueChange = onValueChange,
         placeholder = placeholder,
         leadingIcon = leadingIcon,
+        trailingIcon = trailingIcon,
+        singleLine = true,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = TextFieldBackground,
             unfocusedContainerColor = TextFieldBackground,

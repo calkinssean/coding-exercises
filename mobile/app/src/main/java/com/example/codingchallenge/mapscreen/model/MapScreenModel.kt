@@ -13,7 +13,7 @@ data class MapScreenModel(
     val locationTypes: List<Attribute> =
         locations.flatMap { it.attributes }.filter { it.type == "location_type" }.distinct()
 
-    fun filteredLocations(): List<Location> {
+    fun filteredByType(): List<Location> {
         return filterByTypes(locations)
     }
 
@@ -27,13 +27,10 @@ data class MapScreenModel(
     }
 
     val searchResults: List<Location> =
-        locations.filter { it.name.contains(searchQuery, ignoreCase = true) }
-
-//    private fun filterBySearchQuery(locations: List<Location>): List<Location> {
-//        if (searchQuery.isEmpty()) return locations
-//        return locations.filter { location ->
-//        }
-//    }
-
-
+        filteredByType().filter {
+            it.name.contains(
+                searchQuery,
+                ignoreCase = true
+            ) || it.locationType.contains(searchQuery, ignoreCase = true)
+        }
 }
