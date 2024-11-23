@@ -26,12 +26,14 @@ data class MapScreenModel(
         }
     }
 
+    val searchResults: List<Location> =
+        locations.filter { it.name.contains(searchQuery, ignoreCase = true) }
+
 //    private fun filterBySearchQuery(locations: List<Location>): List<Location> {
 //        if (searchQuery.isEmpty()) return locations
 //        return locations.filter { location ->
 //        }
 //    }
-
 
 
 }

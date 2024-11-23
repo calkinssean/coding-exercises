@@ -23,6 +23,9 @@ data class Location(
     val name: String
         get() = attributes.firstOrNull { it.type == "name" }?.value ?: ""
 
+    val description: String
+        get() = attributes.firstOrNull { it.type == "description" }?.value ?: ""
+
     fun toMarker(context: Context, mapView: MapView): Marker {
         val marker = Marker(mapView)
         marker.position = position
@@ -30,18 +33,20 @@ data class Location(
         return marker
     }
 
-    private fun icon(context: Context): Drawable? {
-        return when (locationType) {
-            "restaurant" -> context.getDrawable(R.drawable.restaurant_icon)
-            "bar" -> context.getDrawable(R.drawable.bar_icon)
-            "cafe" -> context.getDrawable(R.drawable.cafe_icon)
-            "museum" -> context.getDrawable(R.drawable.museum_icon)
-            "landmark" -> context.getDrawable(R.drawable.landmark_icon)
-            "park" -> context.getDrawable(R.drawable.park_icon)
+    val drawableId: Int
+        get() = when (locationType) {
+            "restaurant" -> R.drawable.restaurant_icon
+            "bar" -> R.drawable.bar_icon
+            "cafe" -> R.drawable.cafe_icon
+            "museum" -> R.drawable.museum_icon
+            "landmark" -> R.drawable.landmark_icon
+            "park" -> R.drawable.park_icon
             else -> {
-                Log.d("OSMAPVIEW", "unknown location type: $locationType")
-                context.getDrawable(R.drawable.baseline_location_on_24)
+                Log.d("OSMMAPVIEW", "unknown location type: $locationType")
+                R.drawable.baseline_location_on_24
             }
         }
-    }
+
+    // OSMMap doesn't have compose support so we have to use drawables
+    fun icon(context: Context): Drawable? = context.getDrawable(drawableId)
 }
