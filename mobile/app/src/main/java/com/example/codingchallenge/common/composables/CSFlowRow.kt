@@ -24,7 +24,7 @@ fun <T: CSFlowRowItem>CSFlowRow(
     selectedItems: List<T>,
     onItemClicked: (T) -> Unit
 ) {
-    FlowRow(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+    FlowRow(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(12.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
         items.forEach { item ->
             CSFlowRowUIItem(
                 item,

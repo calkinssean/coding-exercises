@@ -11,5 +11,5 @@ data class MapScreenModel(
     val searchQuery: String = ""
 ) {
     val locationTypes: List<Attribute> =
-        locations.flatMap { it.attributes }.filter { it.type == "location_type" }
+        locations.flatMap { it.attributes }.filter { it.type == "location_type" }.distinct()
 }

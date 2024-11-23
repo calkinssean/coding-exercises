@@ -12,6 +12,9 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -92,17 +95,22 @@ private fun MapScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MapScreenContent(modifier: Modifier = Modifier, model: MapScreenModel, interactions: MapScreenInteractions) {
+private fun MapScreenContent(
+    modifier: Modifier = Modifier,
+    model: MapScreenModel,
+    interactions: MapScreenInteractions
+) {
+    val context = LocalContext.current
+    val sheetState by remember { mutableStateOf(SheetState(
+        skipPartiallyExpanded = false,
+        initialValue = SheetValue.PartiallyExpanded,
+        density = Density(context),
+        confirmValueChange = {
+            it != SheetValue.Hidden
+        }
+    )) }
     val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = SheetState(
-            skipPartiallyExpanded = false,
-            initialValue = SheetValue.PartiallyExpanded,
-            density = Density(LocalContext.current),
-            confirmValueChange = {
-                // Don't allow bottom sheet to expand past the content
-                it != SheetValue.Hidden
-            }
-        )
+        bottomSheetState = sheetState
     )
     BottomSheetScaffold(
         modifier = modifier,
@@ -126,6 +134,10 @@ private fun MapScreenContent(modifier: Modifier = Modifier, model: MapScreenMode
 private fun MapScreenContentPreview() {
     CodingChallengeTheme {
         val model = MapScreenModel()
-        MapScreenContent(modifier = Modifier.fillMaxSize(), model = model, interactions = MapScreenInteractions.EMPTY)
+        MapScreenContent(
+            modifier = Modifier.fillMaxSize(),
+            model = model,
+            interactions = MapScreenInteractions.EMPTY
+        )
     }
 }

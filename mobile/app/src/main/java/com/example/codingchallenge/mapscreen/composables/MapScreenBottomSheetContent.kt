@@ -2,6 +2,7 @@ package com.example.codingchallenge.mapscreen.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -29,7 +30,7 @@ fun MapScreenBottomSheetContent(
         modifier = modifier
             .padding(horizontal = 16.dp)
             .padding(bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         CSTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -46,7 +47,14 @@ fun MapScreenBottomSheetContent(
                 Text(text = "Search Maps", color = Color.LightGray)
             }
         )
-        CSFlowRow(modifier = Modifier.fillMaxWidth(), items = model.locationTypes, selectedItems = model.selectedLocationTypes, onItemClicked = interactions.onLocationTypeSelected)
+        CSFlowRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp),
+            items = model.locationTypes,
+            selectedItems = model.selectedLocationTypes,
+            onItemClicked = interactions.onLocationTypeSelected
+        )
     }
 }
 
