@@ -5,10 +5,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -20,13 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import com.example.codingchallenge.R
 import com.example.codingchallenge.common.composables.CSFlowRow
 import com.example.codingchallenge.common.composables.CSTextField
+import com.example.codingchallenge.common.composables.CircularIcon
 import com.example.codingchallenge.mapscreen.MapScreenInteractions
 import com.example.codingchallenge.mapscreen.model.Location
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
@@ -77,11 +75,8 @@ fun MapScreenBottomSheetContent(
 
 @Composable
 private fun SearchResultRow(modifier: Modifier = Modifier, location: Location) {
-    val context = LocalContext.current
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        Log.d("SEARCHRESULTROW", "drawableId: ${location.drawableId}")
-        Image(location.icon(context)?.toBitmap()?.asImageBitmap()!!, "")
-//        Icon(painter = painterResource(id = location.drawableId), contentDescription = "")
+        CircularIcon(modifier = Modifier.padding(8.dp).size(48.dp), color = location.color, resourceId = location.iconId)
         Column(modifier = Modifier.weight(1f)) {
             Text(text = location.name, style = MaterialTheme.typography.titleMedium)
             Text(text = location.description, style = MaterialTheme.typography.bodyMedium)
