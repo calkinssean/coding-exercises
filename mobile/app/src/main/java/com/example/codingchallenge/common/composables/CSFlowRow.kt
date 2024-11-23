@@ -1,7 +1,9 @@
 package com.example.codingchallenge.common.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -20,12 +22,14 @@ import androidx.compose.ui.unit.dp
 fun CSFlowRow(
     modifier: Modifier = Modifier,
     items: List<CSFlowRowItem>,
+    selectedItems: List<CSFlowRowItem>,
     onItemClicked: (CSFlowRowItem) -> Unit
 ) {
-    FlowRow(modifier = modifier) {
+    FlowRow(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items.forEach { item ->
             CSFlowRowUIItem(
                 item,
+                selected = selectedItems.contains(item),
                 onClick = { onItemClicked(it) }
             )
         }
@@ -36,11 +40,12 @@ fun CSFlowRow(
 private fun CSFlowRowUIItem(item: CSFlowRowItem, selected: Boolean = false, onClick: (CSFlowRowItem) -> Unit) {
     Box(
         modifier = Modifier
-            .background(Color.Blue, shape = RoundedCornerShape(4.dp))
+            .border(width = 1.dp, color = if (selected) Color.Blue else Color.LightGray, shape = RoundedCornerShape(12.dp))
             .clickable { onClick(item) }) {
         Text(
-            modifier = Modifier.padding(vertical = 4.dp, horizontal = 2.dp),
-            text = item.displayValue()
+            modifier = Modifier.padding(vertical = 4.dp, horizontal = 12.dp),
+            text = item.displayValue(),
+            color = Color.LightGray
         )
     }
 }
@@ -52,8 +57,9 @@ interface CSFlowRowItem {
 @Preview
 @Composable
 private fun CSFlowRowPreview() {
-    val items = listOf(PreviewItem("Item 1"), PreviewItem("Item 2"), PreviewItem("Item 3"))
-    CSFlowRow(modifier = Modifier.fillMaxWidth(), items = items, onItemClicked = {})
+    val selectedItem = PreviewItem("Selected Item")
+    val items = listOf(PreviewItem("Item 1"), PreviewItem("Item 2"), PreviewItem("Item 3"), selectedItem)
+    CSFlowRow(modifier = Modifier.fillMaxWidth(), items = items, selectedItems = listOf(selectedItem), onItemClicked = {})
 }
 
 private data class PreviewItem(val value: String) : CSFlowRowItem {
