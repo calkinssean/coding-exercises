@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.codingchallenge.common.GenericError
 import com.example.codingchallenge.common.LoadState
+import com.example.codingchallenge.mapscreen.model.Attribute
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.repositories.LocationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,11 +16,13 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MapScreenViewModel @Inject constructor(private val locationsRepository: LocationsRepository) : ViewModel() {
+class MapScreenViewModel @Inject constructor(private val locationsRepository: LocationsRepository) :
+    ViewModel() {
 
     private val mutableModel = MutableStateFlow(MapScreenModel(loadState = LoadState.Loading))
-
     val observableModel: StateFlow<MapScreenModel> = mutableModel
+    private val latestModel: MapScreenModel
+        get() = mutableModel.value
 
     fun onStart() {
         fetchLocations()
@@ -48,5 +51,15 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
 
     fun onSearchQueryChanged(searchQuery: String) {
         mutableModel.update { it.copy(searchQuery = searchQuery) }
+    }
+
+    fun onLocationTypeSelected(locationType: Attribute) {
+        val selectedLocationTypes = latestModel.selectedLocationTypes.toMutableList()
+        if (selectedLocationTypes.contains(locationType)) {
+            selectedLocationTypes.remove(locationType)
+        } else {
+            selectedLocationTypes.add(locationType)
+        }
+        mutableModel.update { it.copy(selectedLocationTypes = selectedLocationTypes) }
     }
 }

@@ -6,6 +6,7 @@ import com.example.codingchallenge.common.LoadState
 data class MapScreenModel(
     val loadState: LoadState = LoadState.Loading,
     val locations: List<Location> = emptyList(),
+    val selectedLocationTypes: List<Attribute> = emptyList(),
     val error: CommonErrors? = null,
     val searchQuery: String = ""
 ) {

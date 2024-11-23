@@ -2,24 +2,18 @@ package com.example.codingchallenge.mapscreen.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.codingchallenge.common.composables.CSFlowRow
 import com.example.codingchallenge.common.composables.CSTextField
 import com.example.codingchallenge.mapscreen.MapScreenInteractions
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
@@ -52,14 +46,8 @@ fun MapScreenBottomSheetContent(
                 Text(text = "Search Maps", color = Color.LightGray)
             }
         )
-        LocationTypeFlowRow(modifier = Modifier.fillMaxWidth())
+        CSFlowRow(modifier = Modifier.fillMaxWidth(), items = model.locationTypes, selectedItems = model.selectedLocationTypes, onItemClicked = interactions.onLocationTypeSelected)
     }
-}
-
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun LocationTypeFlowRow(modifier: Modifier = Modifier) {
-    FlowRow(modifier = modifier) {  }
 }
 
 @Preview

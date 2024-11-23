@@ -35,12 +35,14 @@ const val MapScreenRoute = "MapScreenRoute"
 
 data class MapScreenInteractions(
     val onRetry: () -> Unit,
-    val onSearchQueryChanged: (String) -> Unit
+    val onSearchQueryChanged: (String) -> Unit,
+    val onLocationTypeSelected: (String) -> Unit
 ) {
     companion object {
         val EMPTY = MapScreenInteractions(
             onRetry = {},
-            onSearchQueryChanged = {}
+            onSearchQueryChanged = {},
+            onLocationTypeSelected = {}
         )
     }
 }
@@ -54,7 +56,8 @@ fun NavGraphBuilder.mapScreen() {
 
         val interactions = MapScreenInteractions(
             onRetry = viewModel::onRetry,
-            onSearchQueryChanged = viewModel::onSearchQueryChanged
+            onSearchQueryChanged = viewModel::onSearchQueryChanged,
+            onLocationTypeSelected = viewModel::onLocationTypeSelected
         )
 
         LifecycleStartEffect(
