@@ -21,6 +21,9 @@ import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 
 const val MapScreenRoute = "MapScreenRoute"
+private data class MapScreenInteractions(
+    val onRetry: () -> Unit
+)
 
 fun NavGraphBuilder.mapScreen() {
     composable(
@@ -28,6 +31,11 @@ fun NavGraphBuilder.mapScreen() {
     ) { backStackEntry ->
         val viewModel: MapScreenViewModel = hiltViewModel()
         val model by viewModel.observableModel.collectAsStateWithLifecycle()
+
+        val interactions = MapScreenInteractions(
+            onRetry = viewModel::onRetry
+        )
+
         LifecycleStartEffect(
             key1 = viewModel,
             lifecycleOwner = LocalLifecycleOwner.current,
@@ -37,17 +45,17 @@ fun NavGraphBuilder.mapScreen() {
             }
         )
 
-        MapScreen(modifier = Modifier.fillMaxSize(), model = model)
+        MapScreen(modifier = Modifier.fillMaxSize(), model = model, interactions = interactions)
 
     }
 }
 
 @Composable
-private fun MapScreen(modifier: Modifier = Modifier, model: MapScreenModel) {
+private fun MapScreen(modifier: Modifier = Modifier, model: MapScreenModel, interactions: MapScreenInteractions) {
     Scaffold(modifier = modifier) { paddingValues ->
         when {
             model.loadState == LoadState.Loading -> LoadingScreen(modifier = Modifier.fillMaxSize())
-            model.error != null -> ErrorScreen(modifier = Modifier.fillMaxSize(), onRetry = { })
+            model.error != null -> ErrorScreen(modifier = Modifier.fillMaxSize(), onRetry = interactions.onRetry)
             else -> MapScreenContent(modifier = modifier.padding(paddingValues), model = model)
         }
     }

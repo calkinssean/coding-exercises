@@ -22,7 +22,6 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
     val observableModel: StateFlow<MapScreenModel> = mutableModel
 
     fun onStart() {
-        Log.d("MapScreenViewModel", "onStart: onStart")
         fetchLocations()
     }
 
@@ -30,7 +29,6 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
         viewModelScope.launch {
             try {
                 val locations = locationsRepository.getLocations()
-                Log.d("MapScreenViewModel", "Got Locations: $locations")
                 mutableModel.update { it.copy(loadState = LoadState.None, locations = locations) }
             } catch (e: Exception) {
                 handleException(e)
@@ -40,5 +38,10 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
 
     private fun handleException(e: Exception) {
         mutableModel.update { it.copy(loadState = LoadState.None, error = GenericError) }
+    }
+
+    fun onRetry() {
+        mutableModel.update { it.copy(loadState = LoadState.Loading, error = null) }
+        fetchLocations()
     }
 }
