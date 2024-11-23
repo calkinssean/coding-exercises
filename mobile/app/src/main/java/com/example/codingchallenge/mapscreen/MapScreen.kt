@@ -6,13 +6,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -40,13 +38,16 @@ const val MapScreenRoute = "MapScreenRoute"
 data class MapScreenInteractions(
     val onRetry: () -> Unit,
     val onSearchQueryChanged: (String) -> Unit,
-    val onLocationTypeSelected: (Attribute) -> Unit
+    val onLocationTypeSelected: (Attribute) -> Unit,
+    val onClearAllLocationTypesClicked: () -> Unit
 ) {
+
     companion object {
         val EMPTY = MapScreenInteractions(
             onRetry = {},
             onSearchQueryChanged = {},
-            onLocationTypeSelected = {}
+            onLocationTypeSelected = {},
+            onClearAllLocationTypesClicked = {}
         )
     }
 }
@@ -61,7 +62,8 @@ fun NavGraphBuilder.mapScreen() {
         val interactions = MapScreenInteractions(
             onRetry = viewModel::onRetry,
             onSearchQueryChanged = viewModel::onSearchQueryChanged,
-            onLocationTypeSelected = viewModel::onLocationTypeSelected
+            onLocationTypeSelected = viewModel::onLocationTypeSelected,
+            onClearAllLocationTypesClicked = viewModel::onClearAllLocationTypesClicked
         )
 
         LifecycleStartEffect(

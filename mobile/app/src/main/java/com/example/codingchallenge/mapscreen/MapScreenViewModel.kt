@@ -62,4 +62,8 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
         }
         mutableModel.update { it.copy(selectedLocationTypes = selectedLocationTypes) }
     }
+
+    fun onClearAllLocationTypesClicked() {
+        mutableModel.update { it.copy(selectedLocationTypes = emptyList()) }
+    }
 }

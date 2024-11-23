@@ -25,7 +25,7 @@ data class Location(
     private val position: GeoPoint
         get() = GeoPoint(latitude, longitude)
 
-    private val locationType: String
+    val locationType: String
         get() = attributes.firstOrNull { it.type == "location_type" }?.value ?: ""
 
     val name: String
