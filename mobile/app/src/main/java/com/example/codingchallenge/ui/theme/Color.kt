@@ -22,5 +22,5 @@ val Green500 = Color(0xFF4CAF50)
 
 val Blue500 = Color(0xFF2196F3)
 
-val TextFieldBackground = Color(0xFFEEEEEE)
+val TextFieldBackground = Color(0xFFF5F5F5)
 val TextFieldTextColor = Color(0xFF9E9E9E)

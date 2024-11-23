@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.codingchallenge.ui.theme.TextFieldBackground
+import com.example.codingchallenge.ui.theme.TextFieldTextColor
 
 @Composable
 fun CSTextField(
@@ -27,10 +29,12 @@ fun CSTextField(
         placeholder = placeholder,
         leadingIcon = leadingIcon,
         colors = TextFieldDefaults.colors(
-            focusedContainerColor = Color.DarkGray,
-            unfocusedContainerColor = Color.DarkGray,
-            unfocusedTextColor = Color.LightGray,
-            focusedTextColor = Color.LightGray,
+            focusedContainerColor = TextFieldBackground,
+            unfocusedContainerColor = TextFieldBackground,
+            focusedLeadingIconColor = TextFieldTextColor,
+            unfocusedLeadingIconColor = TextFieldTextColor,
+            unfocusedTextColor = TextFieldTextColor,
+            focusedTextColor = TextFieldTextColor,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent
         )

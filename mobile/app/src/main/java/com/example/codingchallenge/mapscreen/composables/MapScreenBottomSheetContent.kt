@@ -3,9 +3,14 @@ package com.example.codingchallenge.mapscreen.composables
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
@@ -27,6 +32,7 @@ import com.example.codingchallenge.mapscreen.model.Attribute
 import com.example.codingchallenge.mapscreen.model.Location
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
+import com.example.codingchallenge.ui.theme.TextFieldTextColor
 
 @Composable
 fun MapScreenBottomSheetContent(
@@ -37,8 +43,7 @@ fun MapScreenBottomSheetContent(
     Column(
         modifier = modifier
             .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(24.dp)
+            .padding(bottom = 24.dp)
     ) {
         CSTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -48,25 +53,30 @@ fun MapScreenBottomSheetContent(
                 Icon(
                     imageVector = Icons.Default.Search,
                     contentDescription = null,
-                    tint = Color.LightGray
+                    tint = TextFieldTextColor
                 )
             },
             placeholder = {
-                Text(text = stringResource(id = R.string.search_maps), color = Color.LightGray)
+                Text(text = stringResource(id = R.string.search_maps), color = TextFieldTextColor)
             }
         )
         CSFlowRow(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 24.dp),
+                .padding(top = 36.dp, bottom = 24.dp)
+                .fillMaxWidth(),
             items = model.locationTypes,
             selectedItems = model.selectedLocationTypes,
             onItemClicked = interactions.onLocationTypeSelected,
             onClearAllClicked = interactions.onClearAllLocationTypesClicked
         )
         if (model.searchQuery.isNotBlank()) {
-            model.searchResults.forEach {
-                SearchResultRow(modifier = Modifier.fillMaxWidth(), location = it)
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                items(model.searchResults) {
+                    SearchResultRow(modifier = Modifier.fillMaxWidth(), location = it)
+                }
             }
         }
     }

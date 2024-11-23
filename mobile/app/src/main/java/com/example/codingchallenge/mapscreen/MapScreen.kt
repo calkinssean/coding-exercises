@@ -1,7 +1,7 @@
 package com.example.codingchallenge.mapscreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
@@ -10,10 +10,13 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
@@ -34,6 +37,8 @@ import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 
 const val MapScreenRoute = "MapScreenRoute"
+private val peekHeight = 140.dp
+private val partiallyExpandedHeight = 240.dp
 
 data class MapScreenInteractions(
     val onRetry: () -> Unit,
@@ -102,32 +107,53 @@ private fun MapScreenContent(
     model: MapScreenModel,
     interactions: MapScreenInteractions
 ) {
+    var sheetHeight by remember { mutableStateOf(peekHeight) }
+    var skipPartiallyExpanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
-    val sheetState by remember { mutableStateOf(SheetState(
-        skipPartiallyExpanded = false,
-        initialValue = SheetValue.PartiallyExpanded,
-        density = Density(context),
-        confirmValueChange = {
-            it != SheetValue.Hidden
-        }
-    )) }
+    val sheetState by remember {
+        mutableStateOf(SheetState(
+            skipPartiallyExpanded = false,
+            initialValue = SheetValue.Hidden,
+            density = Density(context),
+            confirmValueChange = {
+                Log.d("SHEETVALUE", "targetValue: $it")
+                if (it == SheetValue.PartiallyExpanded) {
+                    if (skipPartiallyExpanded) {
+                        skipPartiallyExpanded = false
+                    } else {
+                        sheetHeight = partiallyExpandedHeight
+                    }
+                }
+                if (it == SheetValue.Hidden) {
+                    skipPartiallyExpanded = true
+                    sheetHeight = peekHeight
+                }
+                it != SheetValue.Hidden
+            }
+        ))
+    }
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState
     )
+
     BottomSheetScaffold(
         modifier = modifier,
         scaffoldState = scaffoldState,
+        sheetContainerColor = Color.White,
         sheetContent = {
             MapScreenBottomSheetContent(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxSize(),
                 model = model,
                 interactions = interactions
             )
         },
         sheetShape = RoundedCornerShape(16.dp),
-        sheetPeekHeight = 150.dp
+        sheetPeekHeight = sheetHeight
     ) { paddingValues ->
-        OSMMapView(modifier = modifier.padding(paddingValues), locations = model.filteredLocations())
+        OSMMapView(
+            modifier = modifier.padding(paddingValues),
+            locations = model.filteredLocations()
+        )
     }
 }
 
