@@ -32,7 +32,7 @@ fun <T : Displayable> CSFlowRow(
     items: List<T>,
     selectedItems: List<T>,
     onItemClicked: (T) -> Unit,
-    onClearAllClicked: () -> Unit = {}
+    onClearAllClicked: () -> Unit
 ) {
     FlowRow(
         modifier = modifier,
@@ -105,7 +105,8 @@ private fun CSFlowRowPreview() {
            modifier = Modifier.fillMaxWidth(),
            items = items,
            selectedItems = listOf(selectedItem),
-           onItemClicked = {}
+           onItemClicked = {},
+           onClearAllClicked = {}
        )
    }
 }
