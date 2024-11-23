@@ -1,7 +1,7 @@
-package com.example.codingchallenge.domain.repository
+package com.example.codingchallenge.repositories
 
-import com.example.codingchallenge.data.remote.LocationsApi
-import com.example.codingchallenge.domain.model.Location
+import com.example.codingchallenge.api.LocationsApi
+import com.example.codingchallenge.mapscreen.model.Location
 import javax.inject.Inject
 import javax.inject.Singleton
 

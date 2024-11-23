@@ -1,0 +1,4 @@
+package com.example.codingchallenge.common
+
+interface CommonScreenErrors
+object GenericError: CommonScreenErrors
