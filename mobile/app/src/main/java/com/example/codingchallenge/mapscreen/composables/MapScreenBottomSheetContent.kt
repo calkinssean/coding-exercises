@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +38,7 @@ import com.example.codingchallenge.ui.theme.TextFieldTextColor
 fun MapScreenBottomSheetContent(
     modifier: Modifier = Modifier,
     model: MapScreenModel,
+    onSearchFieldFocused: () -> Unit = {},
     interactions: MapScreenInteractions
 ) {
     Column(
@@ -45,7 +47,9 @@ fun MapScreenBottomSheetContent(
             .padding(bottom = 24.dp)
     ) {
         CSTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { if (it.isFocused) onSearchFieldFocused() },
             value = model.searchQuery,
             onValueChange = interactions.onSearchQueryChanged,
             leadingIcon = {

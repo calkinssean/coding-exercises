@@ -11,10 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -32,6 +34,7 @@ import com.example.codingchallenge.mapscreen.composables.OSMMapView
 import com.example.codingchallenge.mapscreen.model.Attribute
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
+import kotlinx.coroutines.launch
 
 const val MapScreenRoute = "MapScreenRoute"
 private val peekHeight = 140.dp
@@ -107,12 +110,17 @@ private fun MapScreenContent(
     var sheetHeight by remember { mutableStateOf(peekHeight) }
     var skipPartiallyExpanded by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val focusManager = LocalFocusManager.current
     val sheetState by remember {
         mutableStateOf(SheetState(
             skipPartiallyExpanded = false,
             initialValue = SheetValue.Hidden,
             density = Density(context),
             confirmValueChange = {
+                if (it != SheetValue.Expanded) {
+                    focusManager.clearFocus()
+                }
                 if (it == SheetValue.PartiallyExpanded) {
                     if (skipPartiallyExpanded) {
                         skipPartiallyExpanded = false
@@ -140,7 +148,12 @@ private fun MapScreenContent(
             MapScreenBottomSheetContent(
                 modifier = Modifier.fillMaxSize(),
                 model = model,
-                interactions = interactions
+                interactions = interactions,
+                onSearchFieldFocused = {
+                    scope.launch {
+                        sheetState.expand()
+                    }
+                }
             )
         },
         sheetShape = RoundedCornerShape(16.dp),
