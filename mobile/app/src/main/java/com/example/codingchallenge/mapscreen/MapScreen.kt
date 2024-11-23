@@ -1,7 +1,9 @@
 package com.example.codingchallenge.mapscreen
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
@@ -31,9 +33,17 @@ import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 
 const val MapScreenRoute = "MapScreenRoute"
 
-private data class MapScreenInteractions(
-    val onRetry: () -> Unit
-)
+data class MapScreenInteractions(
+    val onRetry: () -> Unit,
+    val onSearchQueryChanged: (String) -> Unit
+) {
+    companion object {
+        val EMPTY = MapScreenInteractions(
+            onRetry = {},
+            onSearchQueryChanged = {}
+        )
+    }
+}
 
 fun NavGraphBuilder.mapScreen() {
     composable(
@@ -43,7 +53,8 @@ fun NavGraphBuilder.mapScreen() {
         val model by viewModel.observableModel.collectAsStateWithLifecycle()
 
         val interactions = MapScreenInteractions(
-            onRetry = viewModel::onRetry
+            onRetry = viewModel::onRetry,
+            onSearchQueryChanged = viewModel::onSearchQueryChanged
         )
 
         LifecycleStartEffect(
@@ -69,7 +80,7 @@ private fun MapScreen(
     when {
         model.loadState == LoadState.Loading -> LoadingScreen(modifier = modifier)
         model.error != null -> ErrorScreen(modifier = modifier, onRetry = interactions.onRetry)
-        else -> MapScreenContent(modifier = modifier, model = model)
+        else -> MapScreenContent(modifier = modifier, model = model, interactions = interactions)
     }
 
 
@@ -77,15 +88,15 @@ private fun MapScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MapScreenContent(modifier: Modifier = Modifier, model: MapScreenModel) {
+private fun MapScreenContent(modifier: Modifier = Modifier, model: MapScreenModel, interactions: MapScreenInteractions) {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = SheetState(
-            skipPartiallyExpanded = true,
+            skipPartiallyExpanded = false,
             initialValue = SheetValue.PartiallyExpanded,
             density = Density(LocalContext.current),
             confirmValueChange = {
                 // Don't allow bottom sheet to expand past the content
-                it != SheetValue.Expanded
+                it != SheetValue.Hidden
             }
         )
     )
@@ -93,8 +104,13 @@ private fun MapScreenContent(modifier: Modifier = Modifier, model: MapScreenMode
         modifier = modifier,
         scaffoldState = scaffoldState,
         sheetContent = {
-            MapScreenBottomSheetContent()
+            MapScreenBottomSheetContent(
+                modifier = Modifier.fillMaxWidth(),
+                model = model,
+                interactions = interactions
+            )
         },
+        sheetShape = RoundedCornerShape(16.dp),
         sheetPeekHeight = 150.dp
     ) { paddingValues ->
         OSMMapView(modifier = modifier.padding(paddingValues), locations = model.locations)
@@ -106,6 +122,6 @@ private fun MapScreenContent(modifier: Modifier = Modifier, model: MapScreenMode
 private fun MapScreenContentPreview() {
     CodingChallengeTheme {
         val model = MapScreenModel()
-        MapScreenContent(modifier = Modifier.fillMaxSize(), model = model)
+        MapScreenContent(modifier = Modifier.fillMaxSize(), model = model, interactions = MapScreenInteractions.EMPTY)
     }
 }

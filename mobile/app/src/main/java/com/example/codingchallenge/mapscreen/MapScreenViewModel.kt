@@ -45,4 +45,8 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
         mutableModel.update { it.copy(loadState = LoadState.Loading, error = null) }
         fetchLocations()
     }
+
+    fun onSearchQueryChanged(searchQuery: String) {
+        mutableModel.update { it.copy(searchQuery = searchQuery) }
+    }
 }

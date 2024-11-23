@@ -19,7 +19,7 @@ fun OSMMapView(modifier: Modifier = Modifier, locations: List<Location>) {
         factory = { context ->
             MapView(context)
                 .apply {
-                    zoomController.setVisibility(Visibility.SHOW_AND_FADEOUT)
+                    zoomController.setVisibility(Visibility.NEVER)
                     setMultiTouchControls(true)
                     setTileSource(TileSourceFactory.MAPNIK)
                     controller.setZoom(ZOOM_LEVEL)
