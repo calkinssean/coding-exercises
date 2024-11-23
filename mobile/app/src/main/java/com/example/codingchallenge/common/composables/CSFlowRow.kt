@@ -1,6 +1,5 @@
 package com.example.codingchallenge.common.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,11 +18,11 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun CSFlowRow(
+fun <T: CSFlowRowItem>CSFlowRow(
     modifier: Modifier = Modifier,
-    items: List<CSFlowRowItem>,
-    selectedItems: List<CSFlowRowItem>,
-    onItemClicked: (CSFlowRowItem) -> Unit
+    items: List<T>,
+    selectedItems: List<T>,
+    onItemClicked: (T) -> Unit
 ) {
     FlowRow(modifier = modifier, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         items.forEach { item ->
@@ -37,7 +36,7 @@ fun CSFlowRow(
 }
 
 @Composable
-private fun CSFlowRowUIItem(item: CSFlowRowItem, selected: Boolean = false, onClick: (CSFlowRowItem) -> Unit) {
+private fun <T: CSFlowRowItem>CSFlowRowUIItem(item: T, selected: Boolean = false, onClick: (T) -> Unit) {
     Box(
         modifier = Modifier
             .border(width = 1.dp, color = if (selected) Color.Blue else Color.LightGray, shape = RoundedCornerShape(12.dp))

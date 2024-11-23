@@ -28,6 +28,7 @@ import com.example.codingchallenge.common.composables.ErrorScreen
 import com.example.codingchallenge.common.composables.LoadingScreen
 import com.example.codingchallenge.mapscreen.composables.MapScreenBottomSheetContent
 import com.example.codingchallenge.mapscreen.composables.OSMMapView
+import com.example.codingchallenge.mapscreen.model.Attribute
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 
@@ -36,7 +37,7 @@ const val MapScreenRoute = "MapScreenRoute"
 data class MapScreenInteractions(
     val onRetry: () -> Unit,
     val onSearchQueryChanged: (String) -> Unit,
-    val onLocationTypeSelected: (String) -> Unit
+    val onLocationTypeSelected: (Attribute) -> Unit
 ) {
     companion object {
         val EMPTY = MapScreenInteractions(
