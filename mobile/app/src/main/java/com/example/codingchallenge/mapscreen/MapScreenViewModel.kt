@@ -1,10 +1,12 @@
-package com.example.codingchallenge.presentation.mapscreen
+package com.example.codingchallenge.mapscreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.codingchallenge.common.GenericError
 import com.example.codingchallenge.common.LoadState
-import com.example.codingchallenge.domain.repository.LocationsRepository
+import com.example.codingchallenge.mapscreen.model.MapScreenModel
+import com.example.codingchallenge.repositories.LocationsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +22,6 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
     val observableModel: StateFlow<MapScreenModel> = mutableModel
 
     fun onStart() {
-        Log.d("MapScreenViewModel", "onStart: onStart")
         fetchLocations()
     }
 
@@ -28,7 +29,6 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
         viewModelScope.launch {
             try {
                 val locations = locationsRepository.getLocations()
-                Log.d("MapScreenViewModel", "Got Locations: $locations")
                 mutableModel.update { it.copy(loadState = LoadState.None, locations = locations) }
             } catch (e: Exception) {
                 handleException(e)
@@ -37,7 +37,11 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
     }
 
     private fun handleException(e: Exception) {
-        Log.d("MapScreenViewModel", "Exception fetching locations: $e")
-        // TODO
+        mutableModel.update { it.copy(loadState = LoadState.None, error = GenericError) }
+    }
+
+    fun onRetry() {
+        mutableModel.update { it.copy(loadState = LoadState.Loading, error = null) }
+        fetchLocations()
     }
 }

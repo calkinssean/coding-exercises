@@ -1,4 +1,4 @@
-package com.example.codingchallenge.domain.model
+package com.example.codingchallenge.mapscreen.model
 
 data class Attribute(
     val type: String,

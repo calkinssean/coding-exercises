@@ -1,6 +1,6 @@
-package com.example.codingchallenge.data.remote
+package com.example.codingchallenge.api
 
-import com.example.codingchallenge.domain.model.Location
+import com.example.codingchallenge.mapscreen.model.Location
 import retrofit2.http.GET
 
 interface LocationsApi {

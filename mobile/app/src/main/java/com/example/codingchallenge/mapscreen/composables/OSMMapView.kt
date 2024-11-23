@@ -1,9 +1,9 @@
-package com.example.codingchallenge.presentation.mapscreen.composables
+package com.example.codingchallenge.mapscreen.composables
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
-import com.example.codingchallenge.domain.model.Location
+import com.example.codingchallenge.mapscreen.model.Location
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController.Visibility

@@ -1,6 +1,6 @@
 package com.example.codingchallenge.hlit
 
-import com.example.codingchallenge.data.remote.LocationsApi
+import com.example.codingchallenge.api.LocationsApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -9,11 +9,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
+private const val BASE_URL = "https://raw.githubusercontent.com/calkinssean/"
+
 @Module
 @InstallIn(SingletonComponent::class)
 object HttpModule {
-
-    private const val BASE_URL = "https://raw.githubusercontent.com/calkinssean/"
 
     @Provides
     @Singleton

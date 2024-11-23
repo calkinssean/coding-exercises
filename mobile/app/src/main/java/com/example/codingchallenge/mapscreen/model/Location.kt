@@ -1,4 +1,4 @@
-package com.example.codingchallenge.domain.model
+package com.example.codingchallenge.mapscreen.model
 
 import android.content.Context
 import android.graphics.drawable.Drawable
