@@ -116,7 +116,6 @@ private fun MapScreenContent(
             initialValue = SheetValue.Hidden,
             density = Density(context),
             confirmValueChange = {
-                Log.d("SHEETVALUE", "targetValue: $it")
                 if (it == SheetValue.PartiallyExpanded) {
                     if (skipPartiallyExpanded) {
                         skipPartiallyExpanded = false
@@ -149,9 +148,9 @@ private fun MapScreenContent(
         },
         sheetShape = RoundedCornerShape(16.dp),
         sheetPeekHeight = sheetHeight
-    ) { paddingValues ->
+    ) { _ ->
         OSMMapView(
-            modifier = modifier.padding(paddingValues),
+            modifier = Modifier.fillMaxSize(),
             locations = model.filteredLocations()
         )
     }
