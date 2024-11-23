@@ -125,7 +125,7 @@ private fun MapScreenContent(
         sheetShape = RoundedCornerShape(16.dp),
         sheetPeekHeight = 150.dp
     ) { paddingValues ->
-        OSMMapView(modifier = modifier.padding(paddingValues), locations = model.locations)
+        OSMMapView(modifier = modifier.padding(paddingValues), locations = model.filteredLocations())
     }
 }
 

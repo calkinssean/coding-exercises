@@ -4,3 +4,6 @@ enum class LoadState {
     Loading, None
 }
 
+interface Displayable {
+    fun displayValue(): String
+}

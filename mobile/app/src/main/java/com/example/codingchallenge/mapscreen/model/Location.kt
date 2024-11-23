@@ -20,6 +20,9 @@ data class Location(
     private val locationType: String
         get() = attributes.firstOrNull { it.type == "location_type" }?.value ?: ""
 
+    val name: String
+        get() = attributes.firstOrNull { it.type == "name" }?.value ?: ""
+
     fun toMarker(context: Context, mapView: MapView): Marker {
         val marker = Marker(mapView)
         marker.position = position
