@@ -3,6 +3,7 @@ package com.example.codingchallenge.common.composables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,15 +23,21 @@ fun CircularIcon(modifier: Modifier = Modifier, color: Color, resourceId: Int) {
     Box(
         modifier = modifier
             .background(color = color, shape = CircleShape)
-            .border(width = 2.dp, color = Color.White, shape = CircleShape),
+            .border(width = 4.dp, color = Color.White, shape = CircleShape),
         contentAlignment = Alignment.Center
     ) {
-        Icon(modifier = Modifier.fillMaxSize().padding(5.dp), painter = painterResource(resourceId), contentDescription = "", tint = Color.White)
+        Icon(modifier = Modifier.padding(8.dp).fillMaxSize(), painter = painterResource(resourceId), contentDescription = "", tint = Color.White)
     }
 }
 
 @Preview
 @Composable
 private fun CircularIconPreview() {
-    CircularIcon(modifier = Modifier.size(24.dp), color = Color.Red, resourceId = R.drawable.ic_restaurant)
+    Column {
+        CircularIcon(
+            modifier = Modifier.size(48.dp),
+            color = Color.Red,
+            resourceId = R.drawable.ic_restaurant
+        )
+    }
 }
