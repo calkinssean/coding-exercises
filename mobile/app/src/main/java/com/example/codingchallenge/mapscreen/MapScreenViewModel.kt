@@ -37,6 +37,7 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
     }
 
     private fun handleException(e: Exception) {
+        Log.d("MapScreenViewModel", "Exception: $e")
         mutableModel.update { it.copy(loadState = LoadState.None, error = GenericError) }
     }
 
