@@ -86,4 +86,8 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
     fun didPanToSelectedLocation() {
         mutableModel.update { it.copy(shouldPanToSelectedLocation = false) }
     }
+
+    fun onUpdateShouldRecenterMap(shouldRecenterMap: Boolean) {
+        mutableModel.update { it.copy(shouldRecenterMap = shouldRecenterMap) }
+    }
 }

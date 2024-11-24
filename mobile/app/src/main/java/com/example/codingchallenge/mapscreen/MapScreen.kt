@@ -1,5 +1,7 @@
 package com.example.codingchallenge.mapscreen
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
@@ -22,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
@@ -31,10 +35,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.codingchallenge.R
 import com.example.codingchallenge.common.LoadState
 import com.example.codingchallenge.common.composables.ErrorScreen
 import com.example.codingchallenge.common.composables.LoadingScreen
-import com.example.codingchallenge.mapscreen.composables.CSMapControl
 import com.example.codingchallenge.mapscreen.composables.LocationDetailBottomSheetContent
 import com.example.codingchallenge.mapscreen.composables.MapScreenBottomSheetContent
 import com.example.codingchallenge.mapscreen.composables.OSMMapView
@@ -42,6 +46,7 @@ import com.example.codingchallenge.mapscreen.model.Attribute
 import com.example.codingchallenge.mapscreen.model.Location
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
+import com.example.codingchallenge.ui.theme.TextFieldTextColor
 import kotlinx.coroutines.launch
 import org.osmdroid.views.overlay.Marker
 
@@ -56,7 +61,8 @@ data class MapScreenInteractions(
     val onClearAllLocationTypesClicked: () -> Unit,
     val onLocationSelected: (Location?) -> Unit,
     val onSearchResultSelected: (Location) -> Unit,
-    val didPanToSelectedLocation: () -> Unit
+    val didPanToSelectedLocation: () -> Unit,
+    val onUpdateShouldRecenterMap: (Boolean) -> Unit
 ) {
 
     companion object {
@@ -67,7 +73,8 @@ data class MapScreenInteractions(
             onClearAllLocationTypesClicked = {},
             onLocationSelected = {},
             onSearchResultSelected = {},
-            didPanToSelectedLocation = {}
+            didPanToSelectedLocation = {},
+            onUpdateShouldRecenterMap = {}
         )
     }
 }
@@ -86,7 +93,8 @@ fun NavGraphBuilder.mapScreen() {
             onClearAllLocationTypesClicked = viewModel::onClearAllLocationTypesClicked,
             onLocationSelected = viewModel::onLocationSelected,
             onSearchResultSelected = viewModel::onSearchResultSelected,
-            didPanToSelectedLocation = viewModel::didPanToSelectedLocation
+            didPanToSelectedLocation = viewModel::didPanToSelectedLocation,
+            onUpdateShouldRecenterMap = viewModel::onUpdateShouldRecenterMap
         )
 
         LifecycleStartEffect(
@@ -206,11 +214,24 @@ private fun MapScreenContent(
                 model = model,
                 interactions = interactions
             )
-            CSMapControl(
+            Box(
                 modifier = Modifier
-                    .padding(top = 32.dp, end = 16.dp)
+                    .background(
+                        color = Color.White,
+                        shape = RoundedCornerShape(4.dp)
+                    )
                     .align(Alignment.TopEnd)
-            )
+            ) {
+                Icon(
+                    modifier = Modifier
+                        .padding(4.dp)
+                        .clickable { interactions.onUpdateShouldRecenterMap(true) },
+                    painter = painterResource(id = R.drawable.ic_location),
+                    tint = TextFieldTextColor,
+                    contentDescription = null
+                )
+            }
+
         }
 
     }

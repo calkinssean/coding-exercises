@@ -35,6 +35,11 @@ fun OSMMapView(modifier: Modifier = Modifier, model: MapScreenModel, interaction
             // Filter out selected location because we want it to be the top layer
             val locations = model.filteredByType().filter { it != model.selectedLocation }
 
+            if (model.shouldRecenterMap) {
+                interactions.onUpdateShouldRecenterMap(false)
+                mapView.controller.animateTo(SAN_FRANCISCO, DEFAULT_ZOOM_LEVEL, PAN_SPEED)
+            }
+
             mapView.overlays.clear()
             val context = mapView.context
             locations.forEach { location ->

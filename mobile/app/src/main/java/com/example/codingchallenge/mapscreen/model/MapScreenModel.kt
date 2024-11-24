@@ -11,7 +11,8 @@ data class MapScreenModel(
     val error: CommonErrors? = null,
     val searchQuery: String = "",
     val selectedLocation: Location? = null,
-    val shouldPanToSelectedLocation: Boolean = false
+    val shouldPanToSelectedLocation: Boolean = false,
+    val shouldRecenterMap: Boolean = false
 ) {
     val locationTypes: List<Attribute> =
         locations.flatMap { it.attributes }.filter { it.type == "location_type" }.distinct()
