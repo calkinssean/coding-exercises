@@ -2,8 +2,10 @@ package com.example.codingchallenge.mapscreen.model
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import android.icu.text.NumberFormat
 import android.util.Log
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.intl.Locale
 import com.example.codingchallenge.R
 import com.example.codingchallenge.ui.theme.Brown700
 import com.example.codingchallenge.ui.theme.Cyan500
@@ -14,6 +16,7 @@ import com.example.codingchallenge.ui.theme.Purple500
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
+import kotlin.text.format
 
 data class Location(
     val attributes: List<Attribute>,
@@ -32,6 +35,17 @@ data class Location(
 
     val description: String
         get() = attributes.firstOrNull { it.type == "description" }?.value ?: ""
+
+    val formattedRevenueString: String
+        get() {
+            val revenueMillions =
+                attributes.firstOrNull { it.type == "estimated_revenue_millions" }?.value?.toDoubleOrNull()
+                    ?: 0.0
+            val revenue = revenueMillions * 1_000_000
+            val currencyFormatter = NumberFormat.getCurrencyInstance()
+            currencyFormatter.maximumFractionDigits = 0
+            return currencyFormatter.format(revenue)
+        }
 
     fun toMarker(context: Context, mapView: MapView, selected: Boolean = false): Marker {
         val marker = Marker(mapView)

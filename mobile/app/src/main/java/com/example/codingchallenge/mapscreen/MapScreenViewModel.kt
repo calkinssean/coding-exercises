@@ -34,6 +34,7 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
         viewModelScope.launch {
             try {
                 val locations = locationsRepository.getLocations()
+                Log.d("MAPSCREENVIEWMODEL", "Revenue: ${locations.flatMap { it.attributes }.filter { it.type == "estimated_revenue_millions" }}")
                 mutableModel.update { it.copy(loadState = LoadState.None, locations = locations) }
             } catch (e: Exception) {
                 handleException(e)
