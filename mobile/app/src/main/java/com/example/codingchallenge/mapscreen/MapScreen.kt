@@ -48,11 +48,10 @@ import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 import com.example.codingchallenge.ui.theme.TextFieldTextColor
 import kotlinx.coroutines.launch
-import org.osmdroid.views.overlay.Marker
 
 const val MapScreenRoute = "MapScreenRoute"
 private val peekHeight = 140.dp
-private val partiallyExpandedHeight = 240.dp
+private val partiallyExpandedHeight = 236.dp
 
 data class MapScreenInteractions(
     val onRetry: () -> Unit,
@@ -216,16 +215,17 @@ private fun MapScreenContent(
             )
             Box(
                 modifier = Modifier
+                    .padding(end = 12.dp, top = 32.dp)
                     .background(
                         color = Color.White,
                         shape = RoundedCornerShape(4.dp)
                     )
+                    .clickable { interactions.onUpdateShouldRecenterMap(true) }
                     .align(Alignment.TopEnd)
             ) {
                 Icon(
                     modifier = Modifier
-                        .padding(4.dp)
-                        .clickable { interactions.onUpdateShouldRecenterMap(true) },
+                        .padding(4.dp),
                     painter = painterResource(id = R.drawable.ic_location),
                     tint = TextFieldTextColor,
                     contentDescription = null
