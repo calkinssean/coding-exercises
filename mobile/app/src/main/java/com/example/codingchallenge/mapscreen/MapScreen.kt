@@ -32,9 +32,11 @@ import com.example.codingchallenge.common.composables.LoadingScreen
 import com.example.codingchallenge.mapscreen.composables.MapScreenBottomSheetContent
 import com.example.codingchallenge.mapscreen.composables.OSMMapView
 import com.example.codingchallenge.mapscreen.model.Attribute
+import com.example.codingchallenge.mapscreen.model.Location
 import com.example.codingchallenge.mapscreen.model.MapScreenModel
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 import kotlinx.coroutines.launch
+import org.osmdroid.views.overlay.Marker
 
 const val MapScreenRoute = "MapScreenRoute"
 private val peekHeight = 140.dp
@@ -44,7 +46,10 @@ data class MapScreenInteractions(
     val onRetry: () -> Unit,
     val onSearchQueryChanged: (String) -> Unit,
     val onLocationTypeSelected: (Attribute) -> Unit,
-    val onClearAllLocationTypesClicked: () -> Unit
+    val onClearAllLocationTypesClicked: () -> Unit,
+    val onLocationSelected: (Location?) -> Unit,
+    val onSearchResultSelected: (Location) -> Unit,
+    val didPanToSelectedLocation: () -> Unit
 ) {
 
     companion object {
@@ -52,7 +57,10 @@ data class MapScreenInteractions(
             onRetry = {},
             onSearchQueryChanged = {},
             onLocationTypeSelected = {},
-            onClearAllLocationTypesClicked = {}
+            onClearAllLocationTypesClicked = {},
+            onLocationSelected = {},
+            onSearchResultSelected = {},
+            didPanToSelectedLocation = {}
         )
     }
 }
@@ -68,7 +76,10 @@ fun NavGraphBuilder.mapScreen() {
             onRetry = viewModel::onRetry,
             onSearchQueryChanged = viewModel::onSearchQueryChanged,
             onLocationTypeSelected = viewModel::onLocationTypeSelected,
-            onClearAllLocationTypesClicked = viewModel::onClearAllLocationTypesClicked
+            onClearAllLocationTypesClicked = viewModel::onClearAllLocationTypesClicked,
+            onLocationSelected = viewModel::onLocationSelected,
+            onSearchResultSelected = viewModel::onSearchResultSelected,
+            didPanToSelectedLocation = viewModel::didPanToSelectedLocation
         )
 
         LifecycleStartEffect(
@@ -153,6 +164,13 @@ private fun MapScreenContent(
                     scope.launch {
                         sheetState.expand()
                     }
+                },
+                onSearchResultSelected = {
+                    scope.launch {
+                        sheetState.partialExpand()
+                    }
+                    focusManager.clearFocus()
+                    interactions.onSearchResultSelected(it)
                 }
             )
         },
@@ -161,7 +179,8 @@ private fun MapScreenContent(
     ) { _ ->
         OSMMapView(
             modifier = Modifier.fillMaxSize(),
-            locations = model.filteredByType()
+            model = model,
+            interactions = interactions
         )
     }
 }

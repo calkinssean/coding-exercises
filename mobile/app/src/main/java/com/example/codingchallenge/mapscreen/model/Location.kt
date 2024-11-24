@@ -3,7 +3,6 @@ package com.example.codingchallenge.mapscreen.model
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.Log
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.example.codingchallenge.R
 import com.example.codingchallenge.ui.theme.Brown700
@@ -34,21 +33,22 @@ data class Location(
     val description: String
         get() = attributes.firstOrNull { it.type == "description" }?.value ?: ""
 
-    fun toMarker(context: Context, mapView: MapView): Marker {
+    fun toMarker(context: Context, mapView: MapView, selected: Boolean = false): Marker {
         val marker = Marker(mapView)
         marker.position = position
-        marker.icon = drawableIcon(context)
+        marker.icon = drawableIcon(context, selected)
+        marker.infoWindow = null
         return marker
     }
 
     // OSMMap doesn't have compose support so we have to use drawables :(
-    fun drawableIcon(context: Context): Drawable? = when (locationType) {
-        "restaurant" -> context.getDrawable(R.drawable.restaurant_icon)
-        "bar" -> context.getDrawable(R.drawable.bar_icon)
-        "cafe" -> context.getDrawable(R.drawable.cafe_icon)
-        "museum" -> context.getDrawable(R.drawable.museum_icon)
-        "landmark" -> context.getDrawable(R.drawable.landmark_icon)
-        "park" -> context.getDrawable(R.drawable.park_icon)
+    private fun drawableIcon(context: Context, selected: Boolean): Drawable? = when (locationType) {
+        "restaurant" -> context.getDrawable(if (selected) R.drawable.restaurant_icon_selected else R.drawable.restaurant_icon)
+        "bar" -> context.getDrawable(if (selected) R.drawable.bar_icon_selected else R.drawable.bar_icon)
+        "cafe" -> context.getDrawable(if (selected) R.drawable.cafe_icon_selected else R.drawable.cafe_icon)
+        "museum" -> context.getDrawable(if (selected) R.drawable.museum_icon_selected else R.drawable.museum_icon)
+        "landmark" -> context.getDrawable(if (selected) R.drawable.landmark_icon_selected else R.drawable.landmark_icon)
+        "park" -> context.getDrawable(if (selected) R.drawable.park_icon_selected else R.drawable.park_icon)
         else -> {
             Log.d("OSMMAPVIEW", "unknown location type: $locationType")
             context.getDrawable(R.drawable.baseline_location_on_24)
@@ -56,7 +56,7 @@ data class Location(
     }
 
     val iconId: Int
-        get() = when(locationType) {
+        get() = when (locationType) {
             "restaurant" -> R.drawable.ic_restaurant
             "bar" -> R.drawable.ic_bar
             "cafe" -> R.drawable.ic_cafe
@@ -67,7 +67,7 @@ data class Location(
         }
 
     val color: Color
-        get() = when(locationType) {
+        get() = when (locationType) {
             "restaurant" -> Pink500
             "bar" -> Purple500
             "cafe" -> Brown700

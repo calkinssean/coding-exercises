@@ -39,7 +39,8 @@ fun MapScreenBottomSheetContent(
     modifier: Modifier = Modifier,
     model: MapScreenModel,
     onSearchFieldFocused: () -> Unit = {},
-    interactions: MapScreenInteractions
+    onSearchResultSelected: (Location) -> Unit,
+    interactions: MapScreenInteractions,
 ) {
     Column(
         modifier = modifier
@@ -89,15 +90,15 @@ fun MapScreenBottomSheetContent(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(model.searchResults) {
-                SearchResultRow(modifier = Modifier.fillMaxWidth(), location = it)
+                SearchResultRow(modifier = Modifier.fillMaxWidth(), location = it, onClick = { onSearchResultSelected(it) })
             }
         }
     }
 }
 
 @Composable
-private fun SearchResultRow(modifier: Modifier = Modifier, location: Location) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+private fun SearchResultRow(modifier: Modifier = Modifier, location: Location, onClick: () -> Unit) {
+    Row(modifier = modifier.clickable { onClick() }, verticalAlignment = Alignment.CenterVertically) {
         CircularIcon(
             modifier = Modifier
                 .padding(8.dp)
@@ -147,6 +148,7 @@ private fun MapScreenBottomSheetContentPreview() {
         MapScreenBottomSheetContent(
             modifier = Modifier.fillMaxWidth(),
             model = model,
+            onSearchResultSelected = {},
             interactions = MapScreenInteractions.EMPTY
         )
     }
