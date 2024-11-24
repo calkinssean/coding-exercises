@@ -80,10 +80,100 @@ Do not edit any lines above this line break.
 
 ## Getting Started
 
-Fill out with necessary information and remove this line.
+To get this project up and running locally on your machine, follow these steps:
 
+### Prerequisites
 
+Make sure you have the following installed:
+
+- **Android Studio** (latest stable version)
+
+### Setting up the Project
+
+1. Open the project in **Android Studio**.
+2. Sync the project with Gradle files by clicking "Sync Now" when prompted.
+3. If the project requires any missing dependencies, Android Studio will automatically prompt you to install them.
+
+### Running the App
+
+1. **Connect an Android Device or Start an Emulator**:
+    - To run the app on a **physical device**, connect your Android device to your computer via USB.
+    - Make sure your device is in **Developer Mode** and **USB debugging** is enabled. If you haven't done this yet, follow these instructions to enable Developer Mode:
+        - [How to enable Developer Mode on Android](https://developer.android.com/studio/run/device)
+        - After enabling Developer Mode, make sure **USB debugging** is turned on by going to **Settings** > **Developer options** > **USB debugging**.
+    - Alternatively, you can run the app on an **Android Emulator**. If you don't have an emulator set up yet, you can create one using Android Studio's AVD (Android Virtual Device) Manager.
+
+2. **Build and Deploy the App**:
+    - In **Android Studio**, click the **"Run"** button (green play icon) located in the top toolbar.
+    - Android Studio will build the app, and once the build is successful, it will automatically deploy the app to your connected device or emulator.
 
 ## Implementation
 
-Fill out with necessary information and remove this line.
+The app follows the **MVVM** (Model-View-ViewModel) architecture, where the **View** (UI) is separated from the **Model** (data handling) and the **ViewModel** (business logic). The app uses **Dagger Hilt** for dependency injection and **MutableStateFlow** for state management.
+
+### Networking
+
+The app uses **Retrofit** to fetch data from the remote `locations.json` file. Retrofit simplifies making HTTP requests and converting the JSON response into Kotlin data classes. Here's a brief overview of how Retrofit is used:
+
+1. **Retrofit Service Interface**: Defines the API endpoints and HTTP methods.
+2. **Data Classes**: Model the JSON response into Kotlin data classes (e.g., `Location`, `LocationType`).
+3. **Repository**: Handles fetching data from the network and provides it to the `ViewModel`.
+
+### Dependency Injection with Dagger Hilt
+
+**Dagger Hilt** is used for managing dependencies and handling the lifecycle of objects within the app. With Hilt, we can easily inject dependencies into the `ViewModel`, network service, and repository classes. Here's a quick overview:
+
+- **@HiltAndroidApp**: This annotation is used in the application class to set up Hilt.
+- **@Inject**: This annotation is used to request dependencies that will be provided by Hilt.
+- **@AndroidEntryPoint**: This annotation is used on Android components (like `Activity`, `Fragment`, etc.) to enable dependency injection.
+
+By using Dagger Hilt, the app maintains cleaner, more maintainable code and simplifies the setup and management of dependencies.
+
+### State Management with MutableStateFlow
+
+The app uses **MutableStateFlow** (from Kotlin's **Flow** API) to manage state and handle UI updates reactively.
+
+- **StateFlow** provides a way to emit and collect state in a more functional style.
+- **MutableStateFlow** is used in the `ViewModel` to expose a mutable state object that the UI collects and reacts to.
+
+This approach makes the app's state management more flexible and aligns with modern Kotlin practices for reactive programming.
+
+### Map Integration
+
+The app uses **OSMDroid** (OpenStreetMap Droid) for map integration. OSMDroid is a powerful and flexible mapping library for Android that doesn't require an API key, making it ideal for this project. The map is displayed as the main view, with location pins/markers representing each item from the JSON file.
+
+### Filtering Locations
+
+The app provides an intuitive UI for filtering locations by their type, using **selectable buttons** and a **search bar**. The filtering UI is inspired by Apple Maps and includes the following:
+
+- **Selectable Buttons**: A row of buttons allows the user to quickly select a location type (e.g., parks, restaurants, landmarks). When a button is clicked, the app updates the map to show only locations matching the selected type.
+- **Search Bar**: A search bar is available for users to search for locations by **location type** or **name**. The results are displayed below the search bar, making it easy to find and filter locations.
+- **Bottom Sheet**: The search results and filtered locations are displayed in a bottom sheet, a sliding panel that allows users to interact with the content without leaving the map view. This provides an intuitive and space-efficient way to manage the UI.
+
+### Location Details on Tap
+
+When a user taps on a location pin, the app shows a detail view with more information about the selected location. The details view displays all attributes for the location, such as:
+
+- **Name**
+- **Type**
+- **Estimated Revenue**
+- **Description**
+
+This feature is designed with inspiration from the **Google Maps** and **Apple Maps** apps, ensuring a familiar and user-friendly experience.
+
+### Key Libraries Used
+
+- **Retrofit**: For network requests.
+- **OSMDroid**: For map integration (no API key required).
+- **Jetpack Compose**: For building the UI in a declarative style.
+- **Dagger Hilt**: For dependency injection.
+- **MutableStateFlow**: For state management.
+- **ViewModel**: For managing UI-related data in a lifecycle-conscious way.
+
+### Why Retrofit?
+
+We used **Retrofit** because it simplifies the process of making network requests and handling JSON responses. It automatically converts the raw JSON into Kotlin objects, allowing us to focus on business logic rather than manually parsing data.
+
+### Why Dagger Hilt?
+
+**Dagger Hilt** is used for its simplicity and power in managing dependencies. It helps keep the codebase clean by providing automatic and declarative dependency injection, reducing boilerplate code and making the app more testable.
