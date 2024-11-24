@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.icu.text.NumberFormat
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.intl.Locale
 import com.example.codingchallenge.R
@@ -24,7 +25,8 @@ data class Location(
     val latitude: Double,
     val longitude: Double
 ) {
-    private val position: GeoPoint
+    @VisibleForTesting
+    val position: GeoPoint
         get() = GeoPoint(latitude, longitude)
 
     val locationType: String
@@ -56,7 +58,8 @@ data class Location(
     }
 
     // OSMMap doesn't have compose support so we have to use drawables :(
-    private fun drawableIcon(context: Context, selected: Boolean): Drawable? = when (locationType) {
+    @VisibleForTesting
+    fun drawableIcon(context: Context, selected: Boolean): Drawable? = when (locationType) {
         "restaurant" -> context.getDrawable(if (selected) R.drawable.restaurant_icon_selected else R.drawable.restaurant_icon)
         "bar" -> context.getDrawable(if (selected) R.drawable.bar_icon_selected else R.drawable.bar_icon)
         "cafe" -> context.getDrawable(if (selected) R.drawable.cafe_icon_selected else R.drawable.cafe_icon)

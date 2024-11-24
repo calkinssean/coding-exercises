@@ -1,6 +1,7 @@
 package com.example.codingchallenge.mapscreen
 
 import android.util.Log
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.codingchallenge.common.GenericError
@@ -21,20 +22,22 @@ import javax.inject.Inject
 class MapScreenViewModel @Inject constructor(private val locationsRepository: LocationsRepository) :
     ViewModel() {
 
-    private val mutableModel = MutableStateFlow(MapScreenModel(loadState = LoadState.Loading))
+    @VisibleForTesting
+    val mutableModel = MutableStateFlow(MapScreenModel(loadState = LoadState.Loading))
     val observableModel: StateFlow<MapScreenModel> = mutableModel
-    private val latestModel: MapScreenModel
+    @VisibleForTesting
+    val latestModel: MapScreenModel
         get() = mutableModel.value
 
     fun onStart() {
         fetchLocations()
     }
 
-    private fun fetchLocations() {
+    @VisibleForTesting
+    fun fetchLocations() {
         viewModelScope.launch {
             try {
                 val locations = locationsRepository.getLocations()
-                Log.d("MAPSCREENVIEWMODEL", "Revenue: ${locations.flatMap { it.attributes }.filter { it.type == "estimated_revenue_millions" }}")
                 mutableModel.update { it.copy(loadState = LoadState.None, locations = locations) }
             } catch (e: Exception) {
                 handleException(e)
@@ -43,7 +46,6 @@ class MapScreenViewModel @Inject constructor(private val locationsRepository: Lo
     }
 
     private fun handleException(e: Exception) {
-        Log.d("MapScreenViewModel", "Exception: $e")
         mutableModel.update { it.copy(loadState = LoadState.None, error = GenericError) }
     }
 
