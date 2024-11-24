@@ -18,6 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +38,9 @@ import com.example.codingchallenge.ui.theme.TextFieldTextColor
 fun MapScreenBottomSheetContent(
     modifier: Modifier = Modifier,
     model: MapScreenModel,
-    interactions: MapScreenInteractions
+    onSearchFieldFocused: () -> Unit = {},
+    onSearchResultSelected: (Location) -> Unit,
+    interactions: MapScreenInteractions,
 ) {
     Column(
         modifier = modifier
@@ -45,7 +48,9 @@ fun MapScreenBottomSheetContent(
             .padding(bottom = 24.dp)
     ) {
         CSTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { if (it.isFocused) onSearchFieldFocused() },
             value = model.searchQuery,
             onValueChange = interactions.onSearchQueryChanged,
             leadingIcon = {
@@ -85,15 +90,15 @@ fun MapScreenBottomSheetContent(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(model.searchResults) {
-                SearchResultRow(modifier = Modifier.fillMaxWidth(), location = it)
+                SearchResultRow(modifier = Modifier.fillMaxWidth(), location = it, onClick = { onSearchResultSelected(it) })
             }
         }
     }
 }
 
 @Composable
-private fun SearchResultRow(modifier: Modifier = Modifier, location: Location) {
-    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+private fun SearchResultRow(modifier: Modifier = Modifier, location: Location, onClick: () -> Unit) {
+    Row(modifier = modifier.clickable { onClick() }, verticalAlignment = Alignment.CenterVertically) {
         CircularIcon(
             modifier = Modifier
                 .padding(8.dp)
@@ -143,6 +148,7 @@ private fun MapScreenBottomSheetContentPreview() {
         MapScreenBottomSheetContent(
             modifier = Modifier.fillMaxWidth(),
             model = model,
+            onSearchResultSelected = {},
             interactions = MapScreenInteractions.EMPTY
         )
     }
