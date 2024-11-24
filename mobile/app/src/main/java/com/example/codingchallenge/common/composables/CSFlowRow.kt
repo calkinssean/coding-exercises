@@ -25,6 +25,11 @@ import com.example.codingchallenge.common.Displayable
 import com.example.codingchallenge.ui.theme.Blue500
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
 
+/**
+ * A composable function that displays a flow row of items.
+ *
+ * @param T The type of item to display. Must inherit from [Displayable]
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun <T : Displayable> CSFlowRow(

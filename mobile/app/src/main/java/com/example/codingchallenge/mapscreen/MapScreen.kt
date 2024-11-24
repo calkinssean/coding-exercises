@@ -137,6 +137,8 @@ private fun MapScreenContent(
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val focusManager = LocalFocusManager.current
+
+    // Sheet state for selected location details
     val detailBottomSheetState by remember {
         mutableStateOf(
             SheetState(
@@ -152,6 +154,8 @@ private fun MapScreenContent(
             )
         )
     }
+
+    // Sheet state for filtering/search UI
     val sheetState by remember {
         mutableStateOf(SheetState(
             skipPartiallyExpanded = false,
@@ -162,6 +166,8 @@ private fun MapScreenContent(
                     focusManager.clearFocus()
                 }
                 if (it == SheetValue.PartiallyExpanded) {
+                    // The peek height makes the sheet state emit 'PartiallyExpanded' after scrolling to 'Hidden',
+                    // skipping that partiallyExpanded event and adjusting the sheetHeight allows for two 'PartiallyExpanded' snap points
                     if (skipPartiallyExpanded) {
                         skipPartiallyExpanded = false
                     } else {

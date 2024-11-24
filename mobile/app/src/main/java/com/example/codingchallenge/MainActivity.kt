@@ -16,7 +16,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setOSMConfig()
-//        Log.d("MainActivity", "onCreate: MainActivity")
         enableEdgeToEdge()
         setContent {
             val navController = rememberNavController()
@@ -26,7 +25,6 @@ class MainActivity : ComponentActivity() {
 
     private fun setOSMConfig() {
         Configuration.getInstance().load(this, getPreferences(MODE_PRIVATE))
-
     }
 }
 

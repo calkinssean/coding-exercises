@@ -22,6 +22,7 @@ data class MapScreenModel(
         return filterByTypes(locations)
     }
 
+    // Get all locations that match the selected location types. If no filters are applied, return all locations
     @VisibleForTesting
     fun filterByTypes(locations: List<Location>): List<Location> {
         if (selectedLocationTypes.isEmpty()) return locations
@@ -33,6 +34,7 @@ data class MapScreenModel(
         }
     }
 
+    // Get all locations that match the search query with filters applied
     val searchResults: List<Location> =
         filteredByType().filter {
             it.name.contains(

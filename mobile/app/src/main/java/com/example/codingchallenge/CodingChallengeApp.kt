@@ -7,7 +7,6 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class CodingChallengeApp: Application() {
     override fun onCreate() {
-//        Log.d("CodingChallengeApp", "onCreate: CodingChallengeApp")
         super.onCreate()
     }
 }
