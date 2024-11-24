@@ -32,7 +32,7 @@ fun OSMMapView(modifier: Modifier = Modifier, model: MapScreenModel, interaction
                 }
         },
         update = { mapView ->
-            // Filter out selected location because we want it to be the top layer
+            // Filter out selected location
             val locations = model.filteredByType().filter { it != model.selectedLocation }
 
             if (model.shouldRecenterMap) {
@@ -50,10 +50,12 @@ fun OSMMapView(modifier: Modifier = Modifier, model: MapScreenModel, interaction
                 }
                 mapView.overlays.add(marker)
             }
+
             model.selectedLocation?.let {
                 val marker = it.toMarker(context, mapView, true)
                 mapView.overlays.add(marker)
                 if (model.shouldPanToSelectedLocation) {
+                    // Reset shouldPanToSelectedLocation property after animation
                     interactions.didPanToSelectedLocation()
                     mapView.controller.animateTo(marker.position, SELECTED_LOCATION_ZOOM_LEVEL, PAN_SPEED)
                 }
