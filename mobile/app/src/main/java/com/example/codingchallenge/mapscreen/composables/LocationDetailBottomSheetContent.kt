@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.codingchallenge.R
@@ -19,6 +21,7 @@ import com.example.codingchallenge.common.composables.CircularIcon
 import com.example.codingchallenge.mapscreen.model.Attribute
 import com.example.codingchallenge.mapscreen.model.Location
 import com.example.codingchallenge.ui.theme.CodingChallengeTheme
+import com.example.codingchallenge.ui.theme.TextFieldTextColor
 
 @Composable
 fun LocationDetailBottomSheetContent(modifier: Modifier = Modifier, location: Location) {
@@ -33,11 +36,14 @@ fun LocationDetailBottomSheetContent(modifier: Modifier = Modifier, location: Lo
             verticalAlignment = Alignment.CenterVertically
         ) {
             CircularIcon(
-                modifier = Modifier.size(32.dp),
+                modifier = Modifier.size(42.dp),
                 resourceId = location.iconId,
                 color = location.color
             )
-            Text(text = location.name, style = MaterialTheme.typography.titleMedium)
+            Column {
+                Text(text = location.name, style = MaterialTheme.typography.titleLarge)
+                Text(text = location.locationType.capitalize(Locale.current), style = MaterialTheme.typography.bodySmall, color = TextFieldTextColor)
+            }
         }
         Text(
             modifier = Modifier.padding(start = 8.dp),

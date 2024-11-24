@@ -46,8 +46,6 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.accompanist)
     implementation(libs.hiltAndroid)
     implementation(libs.lifecycle.runtime.compose)
     kapt(libs.hiltAndroidCompiler)
@@ -65,6 +63,10 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.okhttp)
     testImplementation(libs.junit)
+    testImplementation(libs.coroutine.test)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.mockito.android)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

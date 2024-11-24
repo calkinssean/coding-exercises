@@ -1,5 +1,6 @@
 package com.example.codingchallenge.mapscreen.model
 
+import androidx.annotation.VisibleForTesting
 import com.example.codingchallenge.common.CommonErrors
 import com.example.codingchallenge.common.LoadState
 import org.osmdroid.views.overlay.Marker
@@ -21,7 +22,8 @@ data class MapScreenModel(
         return filterByTypes(locations)
     }
 
-    private fun filterByTypes(locations: List<Location>): List<Location> {
+    @VisibleForTesting
+    fun filterByTypes(locations: List<Location>): List<Location> {
         if (selectedLocationTypes.isEmpty()) return locations
         return locations
             .filter { location ->
